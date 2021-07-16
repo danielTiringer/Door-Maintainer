@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile.dev
       args:
         PHP_VERSION: ${PHP_VERSION}
-    container_name: cake-application
+    container_name: door-maintainer-application
     env_file:
       - .env
     volumes:
@@ -19,26 +19,26 @@ services:
     links:
       - database
     networks:
-      - cake
+      - door-maintainer
 
-  cake:
+  door-maintainer:
     build:
       context: ./docker/cli
       dockerfile: Dockerfile
       args:
         PHP_CLI_VERSION: ${PHP_CLI_VERSION}
-    container_name: cake-cli
+    container_name: door-maintainer-cli
     env_file:
       - .env
     volumes:
       - ./src:/var/www/html
     entrypoint: bin/cake
     networks:
-      - cake
+      - door-maintainer
 
   nginx:
     image: nginx:stable-alpine
-    container_name: cake-nginx
+    container_name: door-maintainer-nginx
     ports:
       - '8080:80'
     volumes:
@@ -48,11 +48,34 @@ services:
       - php
       - database
     networks:
-      - cake
+      - door-maintainer
+
+  yarn:
+    container_name: door-maintainer-yarn
+    build:
+      context: ./src
+      dockerfile: ../docker/yarn/Dockerfile
+    volumes:
+      - ./src:/app
+    networks:
+      - door-maintainer
+
+  assetmix:
+    container_name: door-maintainer-assetmix
+    build:
+      context: ./src
+      dockerfile: ../docker/yarn/Dockerfile
+    command: run watch
+    volumes:
+      - ./src:/app
+    depends_on:
+      - php
+    networks:
+      - door-maintainer
 
   database:
     image: mysql:8
-    container_name: cake-database
+    container_name: door-maintainer-database
     ports:
       - '3306:3306'
     env_file:
@@ -64,13 +87,13 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     command: --default-authentication-plugin=mysql_native_password
     volumes:
-      - cake-data:/var/lib/mysql
+      - door-maintainer-data:/var/lib/mysql
     networks:
-      - cake
+      - door-maintainer
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: cake-admin
+    container_name: door-maintainer-admin
     depends_on:
       - database
     environment:
@@ -80,10 +103,10 @@ services:
     links:
       - database
     networks:
-      - cake
+      - door-maintainer
 
 networks:
-  cake:
+  door-maintainer:
 
 volumes:
-  cake-data:
+  door-maintainer-data:
