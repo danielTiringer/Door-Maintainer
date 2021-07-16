@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a05294b95dd0299877cdad34989c5834",
+    "content-hash": "572714dfb8a230e62922f64b795a9d56",
     "packages": [
         {
             "name": "cakephp/cakephp",
