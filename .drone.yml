@@ -1,0 +1,41 @@
+kind: pipeline
+type: docker
+name: php
+
+steps:
+- name: build
+  image: composer
+  commands:
+    - cd src/
+    - composer install
+  volumes:
+    - name: php-cache
+      path: /drone/src/src/vendor
+
+- name: lint
+  image: php:8
+  commands:
+    - cd api/
+    - composer cs-check
+    - composer stan
+
+- name: test
+  image: php:8
+  commands:
+    - cd src/
+    - composer test
+
+---
+kind: pipeline
+type: docker
+name: vue
+
+steps:
+- name: build
+  image: node:16-alpine
+  commands:
+    - cd src/
+    - yarn install
+  volumes:
+    - name: vue-cache
+      path: /drone/src/src/node_modules
