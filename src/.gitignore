@@ -19,6 +19,12 @@ ehthumbs.db
 Thumbs.db
 .directory
 
+# Webpack generated files #
+###########################
+webroot/css/main.css
+webroot/js/app.js
+webroot/mix-manifest.json
+
 # Tool specific files #
 #######################
 # PHPUnit
