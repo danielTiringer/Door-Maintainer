@@ -23,7 +23,7 @@ steps:
   image: php:8
   commands:
     - cd src/
-    - composer test
+    - vendor/bin/phpunit test
 
 ---
 kind: pipeline
