@@ -15,7 +15,7 @@ steps:
 - name: lint
   image: php:8
   commands:
-    - cd api/
+    - cd src/
     - composer cs-check
     - composer stan
 
