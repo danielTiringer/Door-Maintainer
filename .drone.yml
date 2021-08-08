@@ -16,8 +16,8 @@ steps:
   image: php:8
   commands:
     - cd src/
-    - composer cs-check
-    - composer stan
+    - vendor/bin/phpcs --colors -p  src/ tests/
+    - vendor/bin/phpstan analyse
 
 - name: test
   image: php:8
