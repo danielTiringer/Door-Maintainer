@@ -21,12 +21,12 @@ services:
     networks:
       - door-maintainer
 
-  door-maintainer:
+  cake:
     build:
       context: ./docker/cli
       dockerfile: Dockerfile
       args:
-        PHP_CLI_VERSION: ${PHP_CLI_VERSION}
+        PHP_VERSION: ${PHP_VERSION}
     container_name: door-maintainer-cli
     env_file:
       - .env
@@ -40,7 +40,7 @@ services:
     image: nginx:stable-alpine
     container_name: door-maintainer-nginx
     ports:
-      - '8080:80'
+      - '4000:80'
     volumes:
       - ./src:/var/www/html
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
@@ -51,25 +51,25 @@ services:
       - door-maintainer
 
   yarn:
-    container_name: door-maintainer-yarn
-    build:
-      context: ./src
-      dockerfile: ../docker/yarn/Dockerfile
+    image: node:${NODE_VERSION}-alpine
+    container_name: ${PROJECT_NAME}-yarn
+    env_file: .env
+    entrypoint: yarn
+    working_dir: /var/www/html
     volumes:
-      - ./src:/app
+      - ./src:/var/www/html
     networks:
       - door-maintainer
 
-  assetmix:
-    container_name: door-maintainer-assetmix
-    build:
-      context: ./src
-      dockerfile: ../docker/yarn/Dockerfile
+  asset-mix:
+    image: node:${NODE_VERSION}-alpine
+    container_name: ${PROJECT_NAME}-asset-mix
+    env_file: .env
     command: run watch
+    entrypoint: yarn
+    working_dir: /var/www/html
     volumes:
-      - ./src:/app
-    depends_on:
-      - php
+      - ./src:/var/www/html
     networks:
       - door-maintainer
 
@@ -99,7 +99,7 @@ services:
     environment:
       PMA_HOST: database
     ports:
-      - '8884:80'
+      - '4004:80'
     links:
       - database
     networks:
