@@ -7,7 +7,7 @@ steps:
   image: composer
   commands:
     - cd src/
-    - composer install
+    - composer install --ignore-platform-reqs
   volumes:
     - name: php-cache
       path: /drone/src/src/vendor
