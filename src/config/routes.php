@@ -53,11 +53,6 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
 
     /*
-     * ...and connect the rest of 'Pages' controller's URLs.
-     */
-    $builder->connect('/pages/*', 'Pages::display');
-
-    /*
      * Connect catchall routes for all controllers.
      *
      * The `fallbacks` method is a shortcut for
