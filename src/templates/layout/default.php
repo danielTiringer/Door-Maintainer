@@ -27,6 +27,9 @@ $cakeDescription = 'CakeVue Application';
 </head>
 <body>
     <?= $this->Flash->render() ?>
-    <?= $this->fetch('content') ?>
+
+    <div id="app">
+        <app-greet />
+    </div>
 </body>
 </html>
